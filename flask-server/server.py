@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS
 import sqlite3
 import os
@@ -23,3 +23,9 @@ def users():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+@app.route('/submit-form', methods=['POST'])
+def submit_form():
+    name = request.form.get('name')
+    # do something with the form data
+    return {'message': f'Hello, {name}!'}
