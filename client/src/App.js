@@ -10,7 +10,7 @@ function App() {
 const [data, setData] = useState([{}]);
 
 useEffect(() => {
-  fetch("/users").then(
+  fetch("http://localhost:5000/users").then(
     res => res.json()
   ).then(
     data => {
@@ -21,29 +21,11 @@ useEffect(() => {
 },[])
   return (
     <>
-      <Layout className="layout">
-      <Header>
-        <div className="logo" />
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          defaultSelectedKeys={['2']}
-          items={new Array(6).fill(null).map((_, index) => {
-            const key = index + 1;
-            return {
-              key,
-              label: `nav ${key}`,
-            };
-          })}
-        />
-      </Header>
-      <Content style={{ padding: '0 50px' }}>
-        <div className="site-layout-content">
-          Content
-        </div>
-      </Content>
-      <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
-    </Layout>
+      {(typeof data.users === 'undefined') ? (
+      <p>Loading users...</p>) :
+      (data.users.map((user, i) => (
+        <p key={i}>{user}</p>
+      )))}
     </>
   )
 }
