@@ -2,12 +2,14 @@ import 'antd/dist/reset.css';
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, Container } from '@chakra-ui/react'
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import AboutPage from './pages/AboutPage';
 import Dashboard from './pages/Dashboard';
 import NotFound from './pages/NotFound';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 
 
@@ -27,15 +29,19 @@ function App() {
   }, [])
   return (
     <ChakraProvider>
-      <Router>
-        <Routes>
-          <Route path="*" element={<NotFound />}/>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/about" element={<AboutPage />} />
-        </Routes>
-      </Router>
+      <Navbar />
+      <Container>
+        <Router>
+          <Routes>
+            <Route path="*" element={<NotFound />} />
+            <Route path="/" element={<LoginPage />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/about" element={<AboutPage />} />
+          </Routes>
+        </Router>
+      </Container>
+      <Footer />
     </ChakraProvider>
   )
 }
