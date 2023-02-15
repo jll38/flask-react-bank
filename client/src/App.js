@@ -30,7 +30,7 @@ function App() {
   return (
     <ChakraProvider>
       <Navbar />
-      <Container maxW='1000px' centerContent>
+      <Container maxW='1000px' p='20px' mb='10px'centerContent>
         <Router>
           <Routes>
             <Route path="*" element={<NotFound />} />

@@ -5,11 +5,13 @@ import {
     FormErrorMessage,
     FormHelperText,
     Input,
-    Box
+    Box,
+    Heading
   } from '@chakra-ui/react';
 
 function LoginBox() {
     return(
+        <>
         <Box w='500px' borderWidth='1px' borderRadius='lg' p="15px 30px" overflow='hidden'>
              <FormControl onSubmit={handleSubmit}>
                 <FormLabel>Username</FormLabel>
@@ -19,6 +21,7 @@ function LoginBox() {
                 <FormHelperText>New user? Register <a href='/register'>here.</a></FormHelperText>
             </FormControl>
         </Box>
+        </>
     )
 }
 

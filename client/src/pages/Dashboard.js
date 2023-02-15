@@ -1,6 +1,7 @@
 import 'antd/dist/reset.css';
 import '../App.css';
 import React, { useState, useEffect } from 'react';
+import HeaderDiv from '../components/HeaderDiv';
 import {
   Heading,
   Text,
@@ -24,7 +25,7 @@ import {
 function Dashboard() {
   return (
     <>
-      <Heading align='center'>Dashboard</Heading>
+      <Heading mb='15px' align='center'>Dashboard</Heading>
       <Stack direction={["column", "row"]} w='100%' spacing='30px'>
         <Box w='65%' h='500px' borderWidth='2px' borderRadius='lg' p="25px 30px" overflow='hidden'>
           <Heading size='lg'>Account Balance</Heading>
@@ -75,10 +76,7 @@ function Dashboard() {
         </Box>
         <VStack w='30%'>
           <Box w='100%' h='250px' borderWidth='2px' borderRadius='lg' p="15px 30px" overflow='hidden'>
-            <div>
-              <Heading size='md'>General</Heading>
-              <Divider orientation='horizontal' />
-            </div>
+            <HeaderDiv text="User Info"/>
             <Heading size='sm'>Card No.</Heading>
             <Text>5105105105105100</Text>
           </Box>
