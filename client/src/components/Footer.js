@@ -22,7 +22,7 @@ import {
           spacing={4}
           justify={{ base: 'center', md: 'space-between' }}
           align={{ base: 'center', md: 'center' }}>
-          <Text>© 2022 Julian Lechner</Text>
+          <Text align='center'>© 2022 Julian Lechner</Text>
         </Container>
       </Box>
     );
