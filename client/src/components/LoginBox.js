@@ -10,7 +10,7 @@ import {
 
 function LoginBox() {
     return(
-        <Box maxW='lg' borderWidth='1px' borderRadius='lg' p="15px 30px" overflow='hidden'>
+        <Box w='500px' borderWidth='1px' borderRadius='lg' p="15px 30px" overflow='hidden'>
              <FormControl onSubmit={handleSubmit}>
                 <FormLabel>Username</FormLabel>
                 <Input type='text' name="name" placeholder />
