@@ -6,6 +6,8 @@ import { ChakraProvider } from '@chakra-ui/react'
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import AboutPage from './pages/AboutPage';
+import Dashboard from './pages/Dashboard';
+import NotFound from './pages/NotFound';
 
 
 
@@ -27,7 +29,9 @@ function App() {
     <ChakraProvider>
       <Router>
         <Routes>
+          <Route path="*" element={<NotFound />}/>
           <Route path="/" element={<LoginPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/about" element={<AboutPage />} />
         </Routes>
