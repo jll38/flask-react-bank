@@ -9,7 +9,7 @@ import {
     Input,
     Image
   } from '@chakra-ui/react'
-import LoginBox from '../components/LoginBox';
+import RegisterBox from '../components/RegisterBox';
 
 function RegisterPage() {
     const [data, setData] = useState([{}]);
@@ -17,11 +17,10 @@ function RegisterPage() {
     return (
         <>
             <Image boxSize='500px' objectFit='cover' src='static\images\reask-bank-final.png' alt='reask-bank-logo'/>
-            <LoginBox/>
+            <RegisterBox/>
 
         </>
     )
 }
 
 export default RegisterPage
-
