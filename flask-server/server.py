@@ -21,11 +21,21 @@ with open("db/SQL Scripts/create_tables.sql") as f:
 def users():
     return {"users": ["John", "Bob", "Juan"]}
 
+@app.route('/register', methods=['POST'])
+def register():
+    user = request.json.get('user')
+    password = request.json.get('password')
+    try:
+        cursor = conn.cursor()
+        query = f"INSERT INTO users (username, password) VALUES (?, ?)"
+        cursor.execute(query, (user, password))
+        conn.commit()
+        return {"success": True}
+    except Exception as e:
+        conn.rollback()
+        return {"success": False, "error": str(e)}
+    return "hi"
+
 if __name__ == "__main__":
     app.run(debug=True)
 
-@app.route('/submit-form', methods=['POST'])
-def submit_form():
-    name = request.form.get('name')
-    # do something with the form data
-    return {'message': f'Hello, {name}!'}
