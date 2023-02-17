@@ -47,7 +47,7 @@ const handleSubmit = (e) => {
     console.log(`Salt: ${salt}`)
     console.log(`Hashed Password ${hashedPassword}`);
     const data = {user, password: hashedPassword}
-    fetch('https://localhost:5000/register', {
+    fetch('http://localhost:5000/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
