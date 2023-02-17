@@ -18,10 +18,19 @@ with open("db/SQL Scripts/create_tables.sql") as f:
     commands = f.read()
     conn.executescript(commands)
 
+@app.route("/")
+def default():
+    return "Snooping as usual, I see?"
+
 #Users API router
 @app.route("/users")
 def users():
-    return {"users": ["John", "Bob", "Juan"]}
+    cursor = conn.cursor()
+    query = f"SELECT username FROM users"
+    cursor.execute(query)
+    results = cursor.fetchall()
+    usernames = [result[0] for result in results]
+    return {"users": usernames}
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -34,7 +43,7 @@ def register():
     try:
         logging.debug('Executing DB')
         cursor = conn.cursor()
-        query = f"INSERT INTO user_accounts (username, password, balance) VALUES (?, ?, ?)"
+        query = f"INSERT INTO users (username, password, balance) VALUES (?, ?, ?)"
         logging.debug(query)
         cursor.execute(query, (user, password, 0))
         conn.commit()
@@ -48,3 +57,6 @@ def register():
 if __name__ == "__main__":
     app.run(debug=True)
 
+@app.route('/clear', methods=['POST'])
+def clear():
+   return{"success" : True} 

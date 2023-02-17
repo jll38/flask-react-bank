@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS user_accounts (
+CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY,
     username TEXT NOT NULL,
     password TEXT NOT NULL,
@@ -12,5 +12,5 @@ CREATE TABLE IF NOT EXISTS transactions (
     amount REAL NOT NULL,
     date TEXT NOT NULL,
     transactType TEXT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES user_accounts(id)
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
