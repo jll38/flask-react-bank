@@ -16,7 +16,7 @@ function RegisterPage() {
 
     return (
         <>
-            <Image boxSize='500px' objectFit='cover' src='static\images\reask-bank-final.png' alt='reask-bank-logo'/>
+            <Image boxSize='68%' objectFit='cover' src='static\images\reask-bank-final.png' alt='reask-bank-logo'/>
             <RegisterBox/>
 
         </>
