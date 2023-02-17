@@ -34,7 +34,7 @@ def register():
     try:
         logging.debug('Executing DB')
         cursor = conn.cursor()
-        query = f"INSERT INTO user_accounts (username, password, balance) VALUES (?, ?, ?)"
+        query = f"INSERT INTO users (username, password, balance) VALUES (?, ?, ?)"
         logging.debug(query)
         cursor.execute(query, (user, password, 0))
         conn.commit()
