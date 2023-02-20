@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS users (
     password TEXT NOT NULL,
     salt TEXT NOT NULL,
     balance REAL NOT NULL
+    
 );
 
 CREATE TABLE IF NOT EXISTS transactions (

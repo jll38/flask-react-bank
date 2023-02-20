@@ -46,7 +46,7 @@ const handleSubmit = (e) => {
     console.log(`Plaintext Password ${pass}`);
     console.log(`Salt: ${salt}`)
     console.log(`Hashed Password ${hashedPassword}`);
-    const data = {user, password: hashedPassword}
+    const data = {user, password: hashedPassword, salt}
     fetch('http://localhost:5000/register', {
         method: 'POST',
         headers: {
@@ -54,6 +54,7 @@ const handleSubmit = (e) => {
         },
         body: JSON.stringify(data),
     }).then((response) => response.json)
-    .then((data) => console.log(data))
+    .then((data) => {console.log(data)
+                    window.location.replace("/dashboard");})
     .catch((error) => console.error(error));
 }
