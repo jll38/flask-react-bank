@@ -49,6 +49,6 @@ const handleSubmit = (e) => {
         body: JSON.stringify(data),
     }).then((response) => response.json)
     .then((data) => {console.log(data)
-                    })
+                    window.location.replace("/dashboard");}) //Redirect to Dashboard
     .catch((error) => console.error(error));
 }
