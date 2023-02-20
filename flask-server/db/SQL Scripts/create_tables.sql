@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS users (
     username TEXT NOT NULL,
     password TEXT NOT NULL,
     salt TEXT NOT NULL,
-    balance REAL NOT NULL,
+    balance REAL NOT NULL
     
 );
 

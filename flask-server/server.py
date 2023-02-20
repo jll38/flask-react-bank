@@ -1,5 +1,6 @@
 from flask import Flask, request
 from flask_cors import CORS
+import bcrypt
 import sqlite3
 import os
 import logging
@@ -36,16 +37,18 @@ def users():
 def register():
     user = request.json.get('user')
     password = request.json.get('password')
+    salt = request.json.get('salt')
     logging.debug(f"Registering user: {user}")
     logging.debug(f"Password: {password}")
+    logging.debug(f"Salt: {salt}")
     if user is None or password is None or user == '' or password == '':
         return {"success": False, "error": "Missing username or password"}
     try:
         logging.debug('Executing DB')
         cursor = conn.cursor()
-        query = f"INSERT INTO users (username, password, balance) VALUES (?, ?, ?)"
+        query = f"INSERT INTO users (username, password, salt, balance) VALUES (?, ?, ?, ?)"
         logging.debug(query)
-        cursor.execute(query, (user, password, 0))
+        cursor.execute(query, (user, password, salt, 0))
         conn.commit()
         logging.debug("User registered successfully!")
         return {"success": True}
@@ -53,6 +56,29 @@ def register():
         conn.rollback()
         return {"success": False, "error": str(e)}
     return "hi"
+
+@app.route('/login', methods=['POST'])
+def login():
+    user = request.json.get('user')
+    password = request.json.get('password')
+     if user is None or password is None or user == '' or password == '':
+        return {"success": False, "error": "Missing username or password"}
+    logging.debug(f"Attempting to log in as user '{user}'")
+    logging.debug(f"User entered password '{password}'")
+    try:
+        logging.debug('Executing query')
+        cursor = conn.cursor()
+        query = f"SELECT salt FROM users WHERE username = ?"
+        cursor.execute(query, (user))
+        salt = curson.fetchone()
+        logging.debug(f"Salt: ${salt}")
+
+    
+
+
+def handleLogin():
+    print('hi')
+
 
 if __name__ == "__main__":
     app.run(debug=True)

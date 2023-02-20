@@ -1,3 +1,4 @@
 logging
 Flask
 flask_cors
+bcrypt

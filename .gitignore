@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Ignore virtual environment
+flask-server/venv
+
 # dependencies
 client/node_modules/
 client/.pnp
@@ -12,7 +15,6 @@ clience/pnp.js
 /build
 
 # misc
-flask-server/venv
 .DS_Store
 .env.local
 .env.development.local
