@@ -96,7 +96,7 @@ import {
             fontWeight={600}
             color={'white'}
             bg={'blue.400'}
-            href={'#'}
+            href={'/register'}
             _hover={{
               bg: 'blue.300',
             }}>
@@ -107,3 +107,4 @@ import {
     </Box>
     );
   }
+

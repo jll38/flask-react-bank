@@ -2,7 +2,9 @@ CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY,
     username TEXT NOT NULL,
     password TEXT NOT NULL,
-    balance REAL NOT NULL
+    salt TEXT NOT NULL,
+    balance REAL NOT NULL,
+    
 );
 
 CREATE TABLE IF NOT EXISTS transactions (
