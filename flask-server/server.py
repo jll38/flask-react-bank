@@ -46,9 +46,9 @@ def register():
     try:
         logging.debug('Executing DB')
         cursor = conn.cursor()
-        query = f"INSERT INTO users (username, password, salt, balance) VALUES (?, ?, ?, ?)"
+        query = f"INSERT INTO users (username, password, balance) VALUES (?, ?, ?)"
         logging.debug(query)
-        cursor.execute(query, (user, password, salt, 0))
+        cursor.execute(query, (user, password, 0))
         conn.commit()
         logging.debug("User registered successfully!")
         return {"success": True}
@@ -67,13 +67,24 @@ def login():
     logging.debug(f"User entered password '{password}'")
     try:
         logging.debug('Executing query')
-        cursor = conn.cursor()
-        query = f"SELECT salt FROM users WHERE username = ?"
-        cursor.execute(query, (user))
-        salt = cursor.fetchone()
-        logging.debug(f"Salt: ${salt}")
-    except:
-        print('Hi')
+        stored_hash = getStoredHash(user)
+        logging.debug("Checking password...")
+        if bcrypt.checkpw(password.encode('utf-8'), stored_hash.encode('utf-8')):
+            print('logged in')
+        else:
+            print('no match')
+        return {"success": True}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+def getStoredHash(user):
+    #retrieves stored hash from user table
+    cursor = conn.cursor()
+    query = f"SELECT password FROM users WHERE username = ?"
+    logging.debug(query)
+    cursor.execute(query, (user,))
+    stored_hash = cursor.fetchone()[0]
+    return stored_hash
 
 if __name__ == "__main__":
     app.run(debug=True)
