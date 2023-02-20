@@ -39,14 +39,16 @@ export default RegisterBox
 
 const handleSubmit = (e) => {
     e.preventDefault();
+    //Get user input
     const user = document.getElementById('usernameInput').value;
     const pass = document.getElementById('passwordInput').value;
     const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(pass, salt);
+    const hashedPassword = bcrypt.hashSync(pass, salt); // Hash Password
     console.log(`Plaintext Password ${pass}`);
     console.log(`Salt: ${salt}`)
     console.log(`Hashed Password ${hashedPassword}`);
     const data = {user, password: hashedPassword, salt}
+    //Send Data to backend
     fetch('http://localhost:5000/register', {
         method: 'POST',
         headers: {
@@ -55,6 +57,6 @@ const handleSubmit = (e) => {
         body: JSON.stringify(data),
     }).then((response) => response.json)
     .then((data) => {console.log(data)
-                    window.location.replace("/dashboard");})
+                    window.location.replace("/dashboard");}) //Redirect to Dashboard
     .catch((error) => console.error(error));
 }

@@ -35,14 +35,19 @@ def users():
 
 @app.route('/register', methods=['POST'])
 def register():
+    #Receives registration info from Frontend (React)
     user = request.json.get('user')
     password = request.json.get('password')
     salt = request.json.get('salt')
     logging.debug(f"Registering user: {user}")
     logging.debug(f"Password: {password}")
     logging.debug(f"Salt: {salt}")
+
+    #Checks if input is missing
     if user is None or password is None or user == '' or password == '':
         return {"success": False, "error": "Missing username or password"}
+    
+    #Attempts Query (Insertion)
     try:
         logging.debug('Executing DB')
         cursor = conn.cursor()
@@ -57,14 +62,19 @@ def register():
         return {"success": False, "error": str(e)}
     return "hi"
 
+#Login Functionality
 @app.route('/login', methods=['POST'])
 def login():
     user = request.json.get('user')
     password = request.json.get('password')
+
+    #Checks if username or password is missing
     if user is None or password is None or user == '' or password == '':
         return {"success": False, "error": "Missing username or password"}
     logging.debug(f"Attempting to log in as user '{user}'")
     logging.debug(f"User entered password '{password}'")
+    
+    #Attempts to execute the query
     try:
         logging.debug('Executing query')
         stored_hash = getStoredHash(user)
@@ -89,6 +99,8 @@ def getStoredHash(user):
 if __name__ == "__main__":
     app.run(debug=True)
 
+
+#Clears database // TODO
 @app.route('/clear', methods=['POST'])
 def clear():
    return{"success" : True} 
