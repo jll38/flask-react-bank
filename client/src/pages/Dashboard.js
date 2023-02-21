@@ -28,13 +28,14 @@ function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([{}]);
   useEffect(() => {
-    fetch("http://localhost:5000/cardInfo").then(
+    fetch("http://localhost:5000/dashboard").then(
       res => res.json()
     ).then(
       data => {
         setData(data)
         setIsLoading(false);
         console.log(data)
+        console.log(data.transactions)
       }
     )
   }, [])
@@ -47,22 +48,25 @@ function Dashboard() {
           {isLoading ? (
             <Heading size='md'>Loading...</Heading>
           ) : <Heading size='md'>${data.balance}</Heading>}
-          <Button
-            as={'a'}
-            mt={4}
-            colorScheme='teal'
-            href={'/withdrawl'}
-          >
-            Withdrawl
-          </Button>
-          <Button
-            as={'a'}
-            mt={4}
-            colorScheme='teal'
-            href={'/deposit'}
-          >
-            Deposit
-          </Button>
+          <Stack direction={["row","column"]}>
+            <Button
+              as={'a'}
+              mt={4}
+              colorScheme='teal'
+              href={'/withdrawl'}
+              w='40%'
+            >
+              Withdrawl
+            </Button>
+            <Button
+              as={'a'}
+              mt={4}
+              colorScheme='teal'
+              href={'/deposit'}
+              w='40%'
+            >
+              Deposit
+            </Button></Stack>
 
           <div id='transactions'>
             <Heading mt='40px' size='lg'>Transactions</Heading>

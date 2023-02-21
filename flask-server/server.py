@@ -98,7 +98,7 @@ def login():
         return {"success": False, "error": str(e)}
 
 
-@app.route("/cardInfo", methods=['GET'])
+@app.route("/dashboard", methods=['GET'])
 def dashboard():
     user = "default"
     return {
@@ -106,6 +106,7 @@ def dashboard():
         "cardNum" : getCardInfo(user)[0],
         "expiration" : getCardInfo(user)[1],
         "csv" : getCardInfo(user)[2],
+        "transactions" : getTransactions(user)
     }
 
 @app.route("/deposit", methods=['POST'])
@@ -163,7 +164,17 @@ def insertTransaction(userID, source, amount, transactType):
     except Exception as e:
         conn.rollback()
         return{"success": False, "error": str(e)}
-    
+
+def getTransactions(user):
+    try:
+        cursor = conn.cursor()
+        query = f"SELECT * FROM transactions WHERE user_id = ?"
+        userId = getUserID(user)
+        transactions = cursor.execute(query, (userId,))
+        transactions = transactions.fetchall()
+        return transactions
+    except Exception as e:
+        return{"success" : False, "error": str(e)}
 #Gets the User ID from username
 def getUserID(username):
     query = f"SELECT id FROM users WHERE username = ?"
