@@ -108,6 +108,39 @@ def dashboard():
         "csv" : getCardInfo(user)[2],
     }
 
+@app.route("/deposit", methods=['POST'])
+def deposit():
+    user = request.json.get('user')
+    amount = request.json.get('depositVal')
+    logging.debug(f'Amount to deposit: {amount}')
+    if(amount <= 0):
+        return {"success": False, "error" : "Enter a a value GREATER THAN zero"}
+    try:
+        cursor = conn.cursor()
+        query = f"UPDATE users SET balance = balance + ? WHERE username = ?"
+        cursor.execute(query, (amount, user))
+        conn.commit()
+        return {"success": True}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+    
+@app.route("/withdrawl", methods=['POST'])
+def withdrawl():
+    user = request.json.get('user')
+    amount = request.json.get('withdrawlVal')
+    logging.debug(f'Amount to withdraw: {amount}')
+    if(amount <= 0):
+        return {"success": False, "error" : "Enter a a value GREATER THAN zero"}
+    try:
+        cursor = conn.cursor()
+        query = f"UPDATE users SET balance = balance - ? WHERE username = ?"
+        cursor.execute(query, (amount, user))
+        cursor.commit()
+        return {"success": True}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+
 #Get user balance
 def getBalance(user):
     cursor = conn.cursor()

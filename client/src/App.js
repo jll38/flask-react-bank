@@ -7,10 +7,10 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import AboutPage from './pages/AboutPage';
 import Dashboard from './pages/Dashboard';
+import DepositPage from './pages/DepositPage';
 import NotFound from './pages/NotFound';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-
 
 
 function App() {
@@ -36,6 +36,7 @@ function App() {
             <Route path="*" element={<NotFound />} />
             <Route path="/" element={<LoginPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/deposit" element={<DepositPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/about" element={<AboutPage />} />
           </Routes>

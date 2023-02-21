@@ -48,14 +48,18 @@ function Dashboard() {
             <Heading size='md'>Loading...</Heading>
           ) : <Heading size='md'>${data.balance}</Heading>}
           <Button
+            as={'a'}
             mt={4}
             colorScheme='teal'
+            href={'/withdrawl'}
           >
             Withdrawl
           </Button>
           <Button
+            as={'a'}
             mt={4}
             colorScheme='teal'
+            href={'/deposit'}
           >
             Deposit
           </Button>
