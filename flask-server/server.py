@@ -146,6 +146,13 @@ def withdrawl():
     except Exception as e:
         return {"success": False, "error": str(e)}
 
+#Gets the User ID from username
+def getUserID(username):
+    query = f"SELECT id FROM users WHERE username = ?"
+    cursor = conn.cursor()
+    user_id = cursor.execute(query, (username,))
+    user_id = user_id.fetchone()[0]
+    return user_id
 
 #Get user balance
 def getBalance(user):
@@ -158,8 +165,7 @@ def getBalance(user):
 
 def getCardInfo(user):
     cursor = conn.cursor()
-    query = "SELECT id FROM users WHERE username = ?"
-    id = cursor.execute(query, (user,)).fetchone()[0]
+    id = getUserID(user)
     query = "SELECT * from credit_cards WHERE card_holder_id = ?"
     cardInfo = []
     cardData = cursor.execute(query, (id,)).fetchone()
@@ -180,15 +186,10 @@ def getStoredHash(user):
 def generateCard(user):
     card = [] # 0 - Card Num, 1 - Expiration, 2 - Security Code, 3 - Card Holder ID
     card.append(genCardNum())
-
     logging.debug('Card Num' + card[0])
     card.append(genCardExp())
     card.append(genCardSec())
-    cursor = conn.cursor()
-
-    query = f"SELECT id FROM users WHERE username = ?"
-    cursor.execute(query, (user,))
-    id = cursor.fetchone()[0]
+    id = getUserID(user)
     card.append(id)
     print("User:", user)
     print("ID:", id)
