@@ -19,6 +19,7 @@ import {
   Td,
   TableCaption,
   TableContainer,
+  Button,
 } from '@chakra-ui/react'
 
 
@@ -46,65 +47,77 @@ function Dashboard() {
           {isLoading ? (
             <Heading size='md'>Loading...</Heading>
           ) : <Heading size='md'>${data.balance}</Heading>}
+          <Button
+            mt={4}
+            colorScheme='teal'
+          >
+            Withdrawl
+          </Button>
+          <Button
+            mt={4}
+            colorScheme='teal'
+          >
+            Deposit
+          </Button>
 
           <div id='transactions'>
-          <Heading mt='80px' size='lg'>Transactions</Heading>
-          <TableContainer h='270px' overflowY='scroll'>
-            <Table variant="simple">
-              <Thead>
-                <Tr>
-                  <Th>Source</Th>
-                  <Th>Amount</Th>
-                  <Th>Date</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                <Tr color='red.500'>
-                  <Td>Withdrawl</Td>
-                  <Td>$400</Td>
-                  <Td> 10/11/22</Td>
-                </Tr>
-                <Tr color='green.500'>
-                  <Td>Deposit</Td>
-                  <Td>$200</Td>
-                  <Td> 10/10/22</Td>
-                </Tr>
-                <Tr color='green.500'>
-                  <Td>Deposit</Td>
-                  <Td>$200</Td>
-                  <Td> 10/19/22</Td>
-                </Tr>
-                <Tr color='green.500'>
-                  <Td>Deposit</Td>
-                  <Td>$200</Td>
-                  <Td> 10/19/22</Td>
-                </Tr>
-                <Tr color='green.500'>
-                  <Td>Deposit</Td>
-                  <Td>$200</Td>
-                  <Td> 10/19/22</Td>
-                </Tr>
-              </Tbody>
-            </Table>
-          </TableContainer>
+            <Heading mt='40px' size='lg'>Transactions</Heading>
+            <TableContainer h='270px' overflowY='scroll'>
+              <Table variant="simple">
+                <Thead>
+                  <Tr>
+                    <Th>Source</Th>
+                    <Th>Amount</Th>
+                    <Th>Date</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  <Tr color='red.500'>
+                    <Td>Withdrawl</Td>
+                    <Td>$400</Td>
+                    <Td> 10/11/22</Td>
+                  </Tr>
+                  <Tr color='green.500'>
+                    <Td>Deposit</Td>
+                    <Td>$200</Td>
+                    <Td> 10/10/22</Td>
+                  </Tr>
+                  <Tr color='green.500'>
+                    <Td>Deposit</Td>
+                    <Td>$200</Td>
+                    <Td> 10/19/22</Td>
+                  </Tr>
+                  <Tr color='green.500'>
+                    <Td>Deposit</Td>
+                    <Td>$200</Td>
+                    <Td> 10/19/22</Td>
+                  </Tr>
+                  <Tr color='green.500'>
+                    <Td>Deposit</Td>
+                    <Td>$200</Td>
+                    <Td> 10/19/22</Td>
+                  </Tr>
+                </Tbody>
+              </Table>
+            </TableContainer>
           </div>
 
         </Box>
         <VStack w='30%'>
           <Box w='100%' h='250px' borderWidth='2px' borderRadius='lg' p="15px 30px" overflow='hidden'>
-            <HeaderDiv text="User Info"/>
-            <Heading size='sm'>Card No.</Heading>
+            <HeaderDiv text="User Info" />
+            <Heading mt='10px' size='sm'>Card No.</Heading>
             {isLoading ? (
-            <Text size='md'>Loading...</Text>
-          ) : <Text size='md'>{data.cardNum}</Text>}
-          <Heading size='sm'>Expiration</Heading>
+              <Text size='md'>Loading...</Text>
+            ) : <Text size='md'>{data.cardNum}</Text>}
+            <Heading mt='10px' size='sm'>Expiration</Heading>
             {isLoading ? (
-            <Text size='md'>Loading...</Text>
-          ) : <Text size='md'>{data.expiration}</Text>}
-          <Heading size='sm'>CSV</Heading>
-          {isLoading ? (
-            <Text size='md'>Loading...</Text>
-          ) : <Text size='md'>{data.csv}</Text>}
+              <Text size='md'>Loading...</Text>
+            ) : <Text size='md'>{data.expiration}</Text>}
+            <Heading mt='10px' size='sm'>CSV</Heading>
+            {isLoading ? (
+              <Text size='md'>Loading...</Text>
+            ) : <Text size='md'>{data.csv}</Text>}
           </Box>
           <Box w='100%' h='250px' borderWidth='2px' borderRadius='lg' p="15px 30px" overflow='hidden'>
             <div>
