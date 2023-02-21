@@ -11,7 +11,19 @@ import {
 } from '@chakra-ui/react';
 
 function DepositPage() {
-
+    const [isLoading, setIsLoading] = useState(true);
+    const [data, setData] = useState([{}]);
+    useEffect(() => {
+        fetch("http://localhost:5000/cardInfo").then(
+            res => res.json()
+        ).then(
+            data => {
+                setData(data)
+                setIsLoading(false);
+                console.log(data)
+            }
+        )
+    }, [])
     return (
         <>
             <Box w='65%' h='250px' borderWidth='2px' borderRadius='lg' p="25px 30px" overflow='hidden'>
@@ -19,13 +31,16 @@ function DepositPage() {
                     <Heading>Deposit</Heading>
                     <FormLabel>Enter an amount to Deposit</FormLabel>
                     <Input required type='number' step='0.01' placeholder='$0' id="input"></Input>
+                    {isLoading ? (
+                        <FormHelperText size='md'>Loading...</FormHelperText>
+                    ) : <FormHelperText size='md'>Current Balance: ${data.balance}</FormHelperText>}
                     <Button
                         mt={4}
                         colorScheme='teal'
                         type='submit'
                         onClick={handleDeposit}>
-                            Deposit
-                        </Button>
+                        Deposit
+                    </Button>
                 </FormControl>
             </Box>
         </>
@@ -33,24 +48,27 @@ function DepositPage() {
 
 }
 
-function handleDeposit(e){
+function handleDeposit(e) {
     e.preventDefault();
     const depositVal = parseFloat(document.getElementById('input').value);
-    if (depositVal <= 0){
+    if (depositVal <= 0) {
         alert('Enter an amount GREATER THAN zero');
-    } else{
+    } else {
         fetch('http://localhost:5000/deposit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                user : 'default', //Change later once login functionality truely works
-                depositVal: depositVal })
+                user: 'default', //Change later once login functionality truely works
+                depositVal: depositVal
+            })
         }).then((response) => response.json)
-        .then((data) => {console.log(data);
-                        window.location.replace("/dashboard");})
-                        .catch((error) => console.error(error));
+            .then((data) => {
+                console.log(data);
+                window.location.replace("/dashboard");
+            })
+            .catch((error) => console.error(error));
     }
 
 }

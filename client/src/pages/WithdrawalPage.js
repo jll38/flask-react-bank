@@ -11,7 +11,19 @@ import {
 } from '@chakra-ui/react';
 
 function WithdrawalPage() {
-
+    const [isLoading, setIsLoading] = useState(true);
+    const [data, setData] = useState([{}]);
+    useEffect(() => {
+        fetch("http://localhost:5000/cardInfo").then(
+            res => res.json()
+        ).then(
+            data => {
+                setData(data)
+                setIsLoading(false);
+                console.log(data)
+            }
+        )
+    }, [])
     return (
         <>
             <Box w='65%' h='250px' borderWidth='2px' borderRadius='lg' p="25px 30px" overflow='hidden'>
@@ -19,6 +31,9 @@ function WithdrawalPage() {
                     <Heading>Withdrawl</Heading>
                     <FormLabel>Enter an amount to Withdrawl</FormLabel>
                     <Input required type='number' step='0.01' placeholder='$0' id="input"></Input>
+                    {isLoading ? (
+                        <FormHelperText size='md'>Loading...</FormHelperText>
+                    ) : <FormHelperText size='md'>Current Balance: ${data.balance}</FormHelperText>}
                     <Button
                         mt={4}
                         colorScheme='teal'

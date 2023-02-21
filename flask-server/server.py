@@ -98,7 +98,7 @@ def login():
         return {"success": False, "error": str(e)}
 
 
-@app.route("/dashboard", methods=['GET'])
+@app.route("/cardInfo", methods=['GET'])
 def dashboard():
     user = "default"
     return {

@@ -28,7 +28,7 @@ function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([{}]);
   useEffect(() => {
-    fetch("http://localhost:5000/dashboard").then(
+    fetch("http://localhost:5000/cardInfo").then(
       res => res.json()
     ).then(
       data => {
