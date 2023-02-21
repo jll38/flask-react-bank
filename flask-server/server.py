@@ -100,12 +100,34 @@ def login():
 
 @app.route("/dashboard", methods=['GET'])
 def dashboard():
+    user = "default"
+    return {
+        "balance" : getBalance(user),
+        "cardNum" : getCardInfo(user)[0],
+        "expiration" : getCardInfo(user)[1],
+        "csv" : getCardInfo(user)[2],
+    }
+
+#Get user balance
+def getBalance(user):
     cursor = conn.cursor()
     query = f"SELECT balance FROM users WHERE username = ?"
-    balance = cursor.execute(query, ("default",))
+    balance = cursor.execute(query, (user,))
     balance = balance.fetchone()[0]
     print(f"Balance is {balance}")
-    return f"{balance}"
+    return balance
+
+def getCardInfo(user):
+    cursor = conn.cursor()
+    query = "SELECT id FROM users WHERE username = ?"
+    id = cursor.execute(query, (user,)).fetchone()[0]
+    query = "SELECT * from credit_cards WHERE card_holder_id = ?"
+    cardInfo = []
+    cardData = cursor.execute(query, (id,)).fetchone()
+    if cardData:
+        cardInfo = list(cardData)
+    return cardInfo
+
 
 def getStoredHash(user):
     #retrieves stored hash from user table

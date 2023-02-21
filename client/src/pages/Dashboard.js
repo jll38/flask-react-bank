@@ -45,7 +45,7 @@ function Dashboard() {
           <Heading size='lg'>Account Balance</Heading>
           {isLoading ? (
             <Heading size='md'>Loading...</Heading>
-          ) : <Heading size='md'>${data}</Heading>}
+          ) : <Heading size='md'>${data.balance}</Heading>}
 
           <div id='transactions'>
           <Heading mt='80px' size='lg'>Transactions</Heading>
@@ -94,7 +94,17 @@ function Dashboard() {
           <Box w='100%' h='250px' borderWidth='2px' borderRadius='lg' p="15px 30px" overflow='hidden'>
             <HeaderDiv text="User Info"/>
             <Heading size='sm'>Card No.</Heading>
-            <Text>5105105105105100</Text>
+            {isLoading ? (
+            <Text size='md'>Loading...</Text>
+          ) : <Text size='md'>{data.cardNum}</Text>}
+          <Heading size='sm'>Expiration</Heading>
+            {isLoading ? (
+            <Text size='md'>Loading...</Text>
+          ) : <Text size='md'>{data.expiration}</Text>}
+          <Heading size='sm'>CSV</Heading>
+          {isLoading ? (
+            <Text size='md'>Loading...</Text>
+          ) : <Text size='md'>{data.csv}</Text>}
           </Box>
           <Box w='100%' h='250px' borderWidth='2px' borderRadius='lg' p="15px 30px" overflow='hidden'>
             <div>
