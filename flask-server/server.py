@@ -149,6 +149,7 @@ def withdrawl():
         return {"success": True}
     except Exception as e:
         return {"success": False, "error": str(e)}
+    
 # Inserts Transactions into the database
 # Deposits, Withdrawls, etc
 def insertTransaction(userID, source, amount, transactType):
@@ -165,6 +166,7 @@ def insertTransaction(userID, source, amount, transactType):
         conn.rollback()
         return{"success": False, "error": str(e)}
 
+#Gets data from transactions table from a user
 def getTransactions(user):
     try:
         cursor = conn.cursor()
@@ -175,6 +177,7 @@ def getTransactions(user):
         return transactions
     except Exception as e:
         return{"success" : False, "error": str(e)}
+    
 #Gets the User ID from username
 def getUserID(username):
     query = f"SELECT id FROM users WHERE username = ?"
