@@ -96,11 +96,16 @@ def getStoredHash(user):
     stored_hash = cursor.fetchone()[0]
     return stored_hash
 
+@app.route("/dashboard", methods=['GET'])
+def dashboard():
+    cursor = conn.cursor()
+    query = f"SELECT balance FROM users WHERE username = ?"
+    balance = cursor.execute(query, ("default",))
+    balance = balance.fetchone()[0]
+    print(f"Balance is {balance}")
+    return f"{balance}"
+
 if __name__ == "__main__":
     app.run(debug=True)
 
 
-#Clears database // TODO
-@app.route('/clear', methods=['POST'])
-def clear():
-   return{"success" : True} 

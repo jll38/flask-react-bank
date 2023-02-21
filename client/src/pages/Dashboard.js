@@ -22,14 +22,30 @@ import {
 } from '@chakra-ui/react'
 
 
+
 function Dashboard() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [data, setData] = useState([{}]);
+  useEffect(() => {
+    fetch("http://localhost:5000/dashboard").then(
+      res => res.json()
+    ).then(
+      data => {
+        setData(data)
+        setIsLoading(false);
+        console.log(data)
+      }
+    )
+  }, [])
   return (
     <>
       <Heading mb='15px' align='center'>Dashboard</Heading>
       <Stack direction={["column", "row"]} w='100%' spacing='30px'>
         <Box w='65%' h='500px' borderWidth='2px' borderRadius='lg' p="25px 30px" overflow='hidden'>
           <Heading size='lg'>Account Balance</Heading>
-          <Heading size='md'>$1,000</Heading>
+          {isLoading ? (
+            <Heading size='md'>Loading...</Heading>
+          ) : <Heading size='md'>${data}</Heading>}
 
           <div id='transactions'>
           <Heading mt='80px' size='lg'>Transactions</Heading>

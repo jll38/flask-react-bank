@@ -12,7 +12,9 @@ import {
 import LoginBox from '../components/LoginBox';
 
 function LoginPage() {
-    const [data, setData] = useState([{}]);
+    
+
+
 
     return (
         <>
