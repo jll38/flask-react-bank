@@ -5,7 +5,7 @@ import sqlite3
 import os
 import logging
 import random
-import datetime
+from datetime import datetime
 
 currentdirectory = os.path.dirname(os.path.abspath(__file__))
 logging.basicConfig(level=logging.DEBUG)
@@ -120,6 +120,8 @@ def deposit():
         query = f"UPDATE users SET balance = balance + ? WHERE username = ?"
         cursor.execute(query, (amount, user))
         conn.commit()
+        
+        insertTransaction(getUserID(user), f"{user}'s Deposit", amount, "add")
         return {"success": True}
     except Exception as e:
         return {"success": False, "error": str(e)}
@@ -142,10 +144,26 @@ def withdrawl():
             return {"success": False, "error": "Balance cannot be less than zero"}
         conn.commit()
         logging.debug(f"Withdrawl of ${amount} successful!")
+        insertTransaction(getUserID(user), f"{user}'s Withdrawal", amount, "sub")
         return {"success": True}
     except Exception as e:
         return {"success": False, "error": str(e)}
-
+# Inserts Transactions into the database
+# Deposits, Withdrawls, etc
+def insertTransaction(userID, source, amount, transactType):
+    date=getTodaysDate()
+    logging.debug(f"Date of Transaction: {date}")
+    logging.debug("Attempting to insert transaction to table...")
+    try:
+        cursor = conn.cursor()
+        query = f"INSERT INTO transactions (user_id, source, amount, date, transactType) VALUES (?,?,?,?,?)"
+        cursor.execute(query, (userID, source, amount, date, transactType))
+        conn.commit()
+        logging.debug("TRANSACTION INSERTION SUCCESSFUL!")
+    except Exception as e:
+        conn.rollback()
+        return{"success": False, "error": str(e)}
+    
 #Gets the User ID from username
 def getUserID(username):
     query = f"SELECT id FROM users WHERE username = ?"
@@ -153,6 +171,14 @@ def getUserID(username):
     user_id = cursor.execute(query, (username,))
     user_id = user_id.fetchone()[0]
     return user_id
+
+def getTodaysDate():
+    now = datetime.now()
+    logging.debug(now)
+    date = now.strftime("%m/%d/%Y")
+    logging.debug(f"Today's Date: {date}")
+    logging.debug(f"Type of date: {type(date)}")
+    return(date)
 
 #Get user balance
 def getBalance(user):
