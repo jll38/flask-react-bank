@@ -124,7 +124,7 @@ def deposit():
     except Exception as e:
         return {"success": False, "error": str(e)}
     
-@app.route("/withdrawl", methods=['POST'])
+@app.route("/withdraw", methods=['POST'])
 def withdrawl():
     user = request.json.get('user')
     amount = request.json.get('withdrawlVal')
@@ -135,7 +135,13 @@ def withdrawl():
         cursor = conn.cursor()
         query = f"UPDATE users SET balance = balance - ? WHERE username = ?"
         cursor.execute(query, (amount, user))
-        cursor.commit()
+        balance = getBalance(user)
+        if(balance < 0):
+            conn.rollback()
+            logging.debug("BROKE BOY ALERT! ROLLING BACK DATABASE...")
+            return {"success": False, "error": "Balance cannot be less than zero"}
+        conn.commit()
+        logging.debug(f"Withdrawl of ${amount} successful!")
         return {"success": True}
     except Exception as e:
         return {"success": False, "error": str(e)}
