@@ -53,6 +53,7 @@ const handleSubmit = (e) => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Access-Control-Request-Method': 'POST'
         },
         body: JSON.stringify(data),
     }).then((response) => response.json)
@@ -60,3 +61,4 @@ const handleSubmit = (e) => {
                     window.location.replace("/dashboard");}) //Redirect to Dashboard
     .catch((error) => console.error(error));
 }
+

@@ -4,12 +4,15 @@ import bcrypt
 import sqlite3
 import os
 import logging
+import random
+import datetime
 
 currentdirectory = os.path.dirname(os.path.abspath(__file__))
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 CORS(app)
+
 
 # set up database connection
 conn = sqlite3.connect("./db/user_accounts.sqlite", uri=True, check_same_thread=False)
@@ -46,9 +49,9 @@ def register():
     #Checks if input is missing
     if user is None or password is None or user == '' or password == '':
         return {"success": False, "error": "Missing username or password"}
-    
     #Attempts Query (Insertion)
     try:
+        # users table insertion
         logging.debug('Executing DB')
         cursor = conn.cursor()
         query = f"INSERT INTO users (username, password, balance) VALUES (?, ?, ?)"
@@ -56,11 +59,19 @@ def register():
         cursor.execute(query, (user, password, 0))
         conn.commit()
         logging.debug("User registered successfully!")
+        
+        # credit_cards table insertion
+        query = f"INSERT INTO credit_cards (card_num, expiration, security_code, card_holder_id) VALUES (?,?,?,?)"
+        logging.debug(query)
+        card = generateCard(user)
+        print(f"Register Function: {card[0]} {card[1]} {card[2]} {card[3]}")
+        print(f"Register Function: {type(card[0])} {type(card[1])} {type(card[2])} {type(card[3])}")
+        cursor.execute(query, (card[0],card[1],card[2],card[3]))
+        conn.commit()
         return {"success": True}
     except Exception as e:
         conn.rollback()
         return {"success": False, "error": str(e)}
-    return "hi"
 
 #Login Functionality
 @app.route('/login', methods=['POST'])
@@ -73,7 +84,6 @@ def login():
         return {"success": False, "error": "Missing username or password"}
     logging.debug(f"Attempting to log in as user '{user}'")
     logging.debug(f"User entered password '{password}'")
-    
     #Attempts to execute the query
     try:
         logging.debug('Executing query')
@@ -87,6 +97,16 @@ def login():
     except Exception as e:
         return {"success": False, "error": str(e)}
 
+
+@app.route("/dashboard", methods=['GET'])
+def dashboard():
+    cursor = conn.cursor()
+    query = f"SELECT balance FROM users WHERE username = ?"
+    balance = cursor.execute(query, ("default",))
+    balance = balance.fetchone()[0]
+    print(f"Balance is {balance}")
+    return f"{balance}"
+
 def getStoredHash(user):
     #retrieves stored hash from user table
     cursor = conn.cursor()
@@ -96,11 +116,56 @@ def getStoredHash(user):
     stored_hash = cursor.fetchone()[0]
     return stored_hash
 
+def generateCard(user):
+    logging.debug("1 ------------------------------------------------")
+    card = [] # 0 - Card Num, 1 - Expiration, 2 - Security Code, 3 - Card Holder ID
+    logging.debug("2 ------------------------------------------------")
+    card.append(genCardNum())
+    
+    logging.debug('Card Num' + card[0])
+    card.append(genCardExp())
+    card.append(genCardSec())
+    cursor = conn.cursor()
+    logging.debug("4 ------------------------------------------------")
+    query = f"SELECT id FROM users WHERE username = ?"
+    cursor.execute(query, (user,))
+    id = cursor.fetchone()[0]
+    card.append(id)
+    print("User:", user)
+    print("ID:", id)
+    print(f"{card[0]} {card[1]} {card[2]} {card[3]}")
+    return card
+
+# Generates a random card number
+def genCardNum():
+    logging.debug("3 ------------------------------------------------")
+    cardNum = '5522' # Card Type Prefix
+    for i in range(0,12):
+        cardNum += str(random.randint(0,10))
+    logging.debug('Card Num ' + cardNum)
+    return cardNum
+
+# Generates Card Expiration Date
+def genCardExp():
+    exp = ''
+    month = random.randint(1,12)
+    if(month < 10):
+        exp += f'0{month}'
+    else:
+        exp += month
+    year = datetime.date.today()
+    year = str(year.year)[2:]
+    year = int(year) + 3
+    exp += f'/{year}'
+    return exp
+
+# Generates Card Security Number
+def genCardSec():
+    sec = ''
+    for i in range(0,3):
+        sec += str(random.randint(0,9))
+    return sec
+
+
 if __name__ == "__main__":
     app.run(debug=True)
-
-
-#Clears database // TODO
-@app.route('/clear', methods=['POST'])
-def clear():
-   return{"success" : True} 
