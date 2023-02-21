@@ -117,16 +117,14 @@ def getStoredHash(user):
     return stored_hash
 
 def generateCard(user):
-    logging.debug("1 ------------------------------------------------")
     card = [] # 0 - Card Num, 1 - Expiration, 2 - Security Code, 3 - Card Holder ID
-    logging.debug("2 ------------------------------------------------")
     card.append(genCardNum())
-    
+
     logging.debug('Card Num' + card[0])
     card.append(genCardExp())
     card.append(genCardSec())
     cursor = conn.cursor()
-    logging.debug("4 ------------------------------------------------")
+
     query = f"SELECT id FROM users WHERE username = ?"
     cursor.execute(query, (user,))
     id = cursor.fetchone()[0]
@@ -138,7 +136,6 @@ def generateCard(user):
 
 # Generates a random card number
 def genCardNum():
-    logging.debug("3 ------------------------------------------------")
     cardNum = '5522' # Card Type Prefix
     for i in range(0,12):
         cardNum += str(random.randint(0,10))
