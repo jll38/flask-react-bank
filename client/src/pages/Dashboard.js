@@ -85,10 +85,10 @@ function Dashboard() {
                 <Td>Loading...</Td>
               </Tr>
             ) : (
-              data.transactions.map((transaction, index) => (
+              data.transactions.reverse().map((transaction, index) => (
                 <Tr key={index} color={transaction[5] === "add" ? 'green.500' : 'red.500'}>
                   <Td>{transaction[2]}</Td>
-                  <Td>{`$${transaction[3]}`}</Td>
+                  <Td>{transaction[5] === "add" ? '+ ' : '- '}{`$${transaction[3]}`}</Td>
                   <Td>{transaction[4]}</Td>
                 </Tr>
               ))
