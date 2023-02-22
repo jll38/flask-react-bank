@@ -80,32 +80,20 @@ function Dashboard() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  <Tr color='red.500'>
-                    <Td>Withdrawl</Td>
-                    <Td>$400</Td>
-                    <Td> 10/11/22</Td>
-                  </Tr>
-                  <Tr color='green.500'>
-                    <Td>Deposit</Td>
-                    <Td>$200</Td>
-                    <Td> 10/10/22</Td>
-                  </Tr>
-                  <Tr color='green.500'>
-                    <Td>Deposit</Td>
-                    <Td>$200</Td>
-                    <Td> 10/19/22</Td>
-                  </Tr>
-                  <Tr color='green.500'>
-                    <Td>Deposit</Td>
-                    <Td>$200</Td>
-                    <Td> 10/19/22</Td>
-                  </Tr>
-                  <Tr color='green.500'>
-                    <Td>Deposit</Td>
-                    <Td>$200</Td>
-                    <Td> 10/19/22</Td>
-                  </Tr>
-                </Tbody>
+            {isLoading ? (
+              <Tr>
+                <Td>Loading...</Td>
+              </Tr>
+            ) : (
+              data.transactions.map((transaction, index) => (
+                <Tr key={index} color={transaction[5] === "add" ? 'green.500' : 'red.500'}>
+                  <Td>{transaction[2]}</Td>
+                  <Td>{`$${transaction[3]}`}</Td>
+                  <Td>{transaction[4]}</Td>
+                </Tr>
+              ))
+            )}
+          </Tbody>
               </Table>
             </TableContainer>
           </div>

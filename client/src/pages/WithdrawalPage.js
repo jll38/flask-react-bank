@@ -14,7 +14,7 @@ function WithdrawalPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([{}]);
     useEffect(() => {
-        fetch("http://localhost:5000/cardInfo").then(
+        fetch("http://localhost:5000/dashboard").then(
             res => res.json()
         ).then(
             data => {

@@ -64,6 +64,7 @@ def register():
         query = f"INSERT INTO credit_cards (card_num, expiration, security_code, card_holder_id) VALUES (?,?,?,?)"
         logging.debug(query)
         card = generateCard(user)
+        print(card)
         print(f"Register Function: {card[0]} {card[1]} {card[2]} {card[3]}")
         print(f"Register Function: {type(card[0])} {type(card[1])} {type(card[2])} {type(card[3])}")
         cursor.execute(query, (card[0],card[1],card[2],card[3]))
@@ -177,7 +178,7 @@ def getTransactions(user):
         return transactions
     except Exception as e:
         return{"success" : False, "error": str(e)}
-    
+        
 #Gets the User ID from username
 def getUserID(username):
     query = f"SELECT id FROM users WHERE username = ?"
@@ -226,8 +227,9 @@ def getStoredHash(user):
 def generateCard(user):
     card = [] # 0 - Card Num, 1 - Expiration, 2 - Security Code, 3 - Card Holder ID
     card.append(genCardNum())
-    logging.debug('Card Num' + card[0])
+    logging.debug('Card Num ' + card[0])
     card.append(genCardExp())
+
     card.append(genCardSec())
     id = getUserID(user)
     card.append(id)
@@ -246,17 +248,9 @@ def genCardNum():
 
 # Generates Card Expiration Date
 def genCardExp():
-    exp = ''
-    month = random.randint(1,12)
-    if(month < 10):
-        exp += f'0{month}'
-    else:
-        exp += month
-    year = datetime.date.today()
-    year = str(year.year)[2:]
-    year = int(year) + 3
-    exp += f'/{year}'
-    return exp
+    now = datetime.now()
+    exp = now.replace(year=now.year + random.randint(3, 5))
+    return exp.strftime('%m/%y')
 
 # Generates Card Security Number
 def genCardSec():
