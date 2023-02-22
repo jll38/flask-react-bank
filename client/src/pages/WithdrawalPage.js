@@ -39,8 +39,8 @@ function WithdrawalPage() {
                         colorScheme='teal'
                         type='submit'
                         onClick={handleWithdrawal}>
-                            Withdrawl
-                        </Button>
+                        Withdrawl
+                    </Button>
                 </FormControl>
             </Box>
         </>
@@ -48,24 +48,30 @@ function WithdrawalPage() {
 
 }
 
-function handleWithdrawal(e){
+function handleWithdrawal(e) {
     e.preventDefault();
     const withdrawlVal = parseFloat(document.getElementById('input').value);
-    if (withdrawlVal <= 0){
+    if (withdrawlVal <= 0) {
         alert('Enter an amount GREATER THAN zero');
-    } else{
+    } else {
         fetch('http://localhost:5000/withdraw', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                user : 'default', //Change later once login functionality truely works
-                withdrawlVal: withdrawlVal})
-        }).then((response) => response.json)
-        .then((data) => {console.log(data);
-                        window.location.replace("/dashboard");})
-                        .catch((error) => console.error(error));
+                user: 'default', //Change later once login functionality truely works
+                withdrawlVal: withdrawlVal
+            })
+        }).then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                if (data.success) { window.location.replace("/dashboard"); }
+                else {
+                    alert("Sorry, you don't have enough funds for this withdraw");
+                }
+            })
+            .catch((error) => console.error(error));
     }
 
 }
