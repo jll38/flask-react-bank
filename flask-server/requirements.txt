@@ -1,4 +1,6 @@
 logging
-Flask
+flask
+flask-login
 flask_cors
 bcrypt
+flask-jwt-extended
