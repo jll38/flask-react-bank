@@ -34,6 +34,7 @@ function WithdrawalPage() {
                     {isLoading ? (
                         <FormHelperText size='md'>Loading...</FormHelperText>
                     ) : <FormHelperText size='md'>Current Balance: ${data.balance}</FormHelperText>}
+                    
                     <Button
                         mt={4}
                         colorScheme='teal'

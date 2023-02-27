@@ -1,16 +1,23 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import bcrypt
 import sqlite3
 import os
 import logging
 import random
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
+import json
+from flask_jwt_extended import create_access_token, get_jwt,\
+    get_jwt_identity, unset_jwt_cookies, jwt_required, JWTManager
 
 currentdirectory = os.path.dirname(os.path.abspath(__file__))
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
+app.config["JWT_SECRET_KEY"] = "CHANGELATER"
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+
+jwt = JWTManager(app)
 CORS(app)
 
 
@@ -21,6 +28,42 @@ conn = sqlite3.connect("./db/user_accounts.sqlite", uri=True, check_same_thread=
 with open("db/SQL Scripts/create_tables.sql") as f:
     commands = f.read()
     conn.executescript(commands)
+
+@app.after_request
+def refresh_expiring_jwts(response):
+    try:
+        exp_timestamp = get_jwt()["exp"]
+        now = datetime.now(timezone.utc)
+        target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
+        if target_timestamp > exp_timestamp:
+            access_token = create_access_token(identity=get_jwt_identity())
+            data = response.get_json()
+            if type(data) is dict:
+                data["access_token"] = access_token 
+                response.data = json.dumps(data)
+        return response
+    except (RuntimeError, KeyError):
+        # Case where there is not a valid JWT. Just return the original respone
+        return response
+    
+@app.route('/token', methods=["POST"])
+def create_token():
+    user = request.json.get("user", None)
+    password = request.json.get("password", None)
+    stored_hash = getStoredHash(user)
+    logging.debug("Checking password...")
+    
+    if doesUserExist(user) == False or bcrypt.checkpw(password.encode('utf-8'), stored_hash.encode('utf-8')) == False:
+        return {"msg": "Wrong username or password"}, 401
+    access_token = create_access_token(identity=user)
+    response = {"access_token":access_token}
+    return response
+
+@app.route("/logout", methods=["POST"])
+def logout():
+    response = jsonify({"msg": "logout successful"})
+    unset_jwt_cookies(response)
+    return response
 
 @app.route("/")
 def default():
@@ -258,6 +301,14 @@ def genCardSec():
     for i in range(0,3):
         sec += str(random.randint(0,9))
     return sec
+
+def doesUserExist(user):
+    cursor = conn.cursor()
+    query = f"SELECT username from users WHERE username = ?"
+    cursor.execute(query, (user,))
+    if user == cursor.fetchone()[0]:
+        return True
+    return False
 
 
 if __name__ == "__main__":
