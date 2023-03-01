@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_login import LoginManager, login_user, logout_user, login_required, UserMixin
 from flask_cors import CORS
 import bcrypt
 import sqlite3
@@ -11,10 +12,18 @@ import json
 currentdirectory = os.path.dirname(os.path.abspath(__file__))
 logging.basicConfig(level=logging.DEBUG)
 
+
 app = Flask(__name__)
 CORS(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
 
-
+class User(UserMixin):
+    def __init__(self, id, username, password):
+        self.id = id
+        self.username = username
+        self.password = password
+        
 # set up database connection
 conn = sqlite3.connect("./db/user_accounts.sqlite", uri=True, check_same_thread=False)
 
