@@ -19,7 +19,7 @@ function RegisterBox() {
                     <FormLabel>Username</FormLabel>
                     <Input type='text' id="usernameInput" required/>
                     <FormLabel>Password</FormLabel>
-                    <Input type='text' id="passwordInput" required/>
+                    <Input type='password' id="passwordInput" required/>
                     <FormHelperText>Already a User? Login <a href='/'>here.</a></FormHelperText>
                     <Button
                         mt={4}

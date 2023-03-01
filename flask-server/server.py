@@ -214,7 +214,7 @@ def insertTransaction(userID, source, amount, transactType):
 def getTransactions(user):
     try:
         cursor = conn.cursor()
-        query = f"SELECT * FROM transactions WHERE user_id = ?"
+        query = f"SELECT * FROM transactions WHERE user_id = ? ORDER BY transaction_id DESC"
         userId = getUserID(user)
         transactions = cursor.execute(query, (userId,))
         transactions = transactions.fetchall()
