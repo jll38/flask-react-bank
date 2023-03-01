@@ -70,9 +70,10 @@ function Dashboard() {
 
           <div id='transactions'>
             <Heading mt='40px' size='lg'>Transactions</Heading>
+
             <TableContainer h='220px' overflowY='scroll'>
               <Table variant="simple">
-                <Thead>
+                <Thead position="sticky" top={0} zIndex="docked">
                   <Tr>
                     <Th>Source</Th>
                     <Th>Amount</Th>
