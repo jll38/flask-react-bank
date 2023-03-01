@@ -23,7 +23,22 @@ class User(UserMixin):
         self.id = id
         self.username = username
         self.password = password
-        
+    
+    def get_id(self):
+        return self.username
+
+@login_manager.user_loader
+def load_user(username):
+    cursor = conn.cursor()
+    query = f"SELECT id, username, password FROM users WHERE username = ?"
+    cursor.execute(query, (username,))
+    logging.debug(f'load_user running: {query}')
+    result = cursor.fetchone()
+    if result is None:
+        return None
+    user = User(result[0], result[1], result[2])
+    return user
+    
 # set up database connection
 conn = sqlite3.connect("./db/user_accounts.sqlite", uri=True, check_same_thread=False)
 
@@ -35,6 +50,7 @@ with open("db/SQL Scripts/create_tables.sql") as f:
 
 @app.route("/logout", methods=["POST"])
 def logout():
+    logout_user()
     response = jsonify({"msg": "logout successful"})
     return response
 
@@ -107,7 +123,11 @@ def login():
         stored_hash = getStoredHash(user)
         logging.debug("Checking password...")
         if bcrypt.checkpw(password.encode('utf-8'), stored_hash.encode('utf-8')):
-            print('logged in')
+            user_obj = load_user(user)
+            if user_obj is None:
+                raise Exception('User not found')
+            login_user(user_obj)
+            return {"success": True}
         else:
             print('no match')
         return {"success": True}
